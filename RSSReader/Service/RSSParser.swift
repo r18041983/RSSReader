@@ -11,9 +11,15 @@ protocol RSSParserDelegate {
     func beginParsing(parser: RSSParser)
     func newPost(parser: RSSParser, postDict: Dictionary<String, String>)
     func endParsing(parser: RSSParser)
-    func parseErrorOccurred(parser: RSSParser, parseError: Error)
+    func parseErrorOccurred(parser: RSSParser, parseError: ParserError)
 }
 
+enum ParserError: String {
+    case parseError = "parse RSS error"
+    case networkError = "network error"
+    case validationError = "validation news error"
+    case urlValidationError = "url validation error"
+}
 
 class RSSParser: NSObject {
 
@@ -32,11 +38,15 @@ class RSSParser: NSObject {
     func parseRSS()
     {
         guard let url = URL.init(string: self.URLString)
-        else {return}
+        else
+        {
+            self.delegate?.parseErrorOccurred(parser: self, parseError: ParserError.urlValidationError)
+            return
+        }
         
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-            if let error = error {
-                self.delegate?.parseErrorOccurred(parser: self, parseError: error)
+            if error != nil {
+                self.delegate?.parseErrorOccurred(parser: self, parseError: ParserError.networkError)
             }
             guard let data = data else {return}
             
@@ -44,7 +54,10 @@ class RSSParser: NSObject {
             self.parserXML?.delegate = self
             self.parserXML?.parse()
         }
-        task.resume()
+        DispatchQueue.global(qos: .background).async
+        {
+            task.resume()
+        }
     }
     
 }
@@ -59,7 +72,7 @@ extension RSSParser: XMLParserDelegate
     
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error)
     {
-        self.delegate?.parseErrorOccurred(parser: self, parseError: parseError)
+        self.delegate?.parseErrorOccurred(parser: self, parseError: ParserError.parseError)
     }
     
     
@@ -71,7 +84,7 @@ extension RSSParser: XMLParserDelegate
     
     func parser(_ parser: XMLParser, validationErrorOccurred validationError: Error)
     {
-        self.delegate?.parseErrorOccurred(parser: self, parseError: validationError)
+        self.delegate?.parseErrorOccurred(parser: self, parseError: ParserError.validationError)
     }
     
    
@@ -100,9 +113,6 @@ extension RSSParser: XMLParserDelegate
     
     func parser(_ parser: XMLParser, foundCharacters string: String)
     {
-        if string.count <= 3
-        {return}
-        
         guard let localElement = self.tempElement, let _ = tempPost
         else
         {return}
