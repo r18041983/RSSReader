@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CryptoKit
 
 class NewsViewController: UIViewController {
 
@@ -19,6 +18,7 @@ class NewsViewController: UIViewController {
     var postsArray = [Dictionary<String, String>]()
     let reuseIdentifier = "NewsTableCell"
     let segueIdentifier = "fromTableNewsToTextNews"
+    var sortOperation: Character = "<"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +75,6 @@ class NewsViewController: UIViewController {
     }
     
     
-
     @IBAction func pressParseButton(_ sender: UIButton)
     {
         guard let link = self.addressTextField.text
@@ -89,72 +88,4 @@ class NewsViewController: UIViewController {
         parserRSSLenta.parseRSS()
     }
 
-}
-
-extension NewsViewController: RSSParserDelegate
-{
-    func beginParsing(parser: RSSParser)
-    {
-        DispatchQueue.main.async
-        {
-            WaitIndicator.shared.show(viewToAdd: &self.view)
-        }
-    }
-    
-    func newPost(parser: RSSParser, postDict: Dictionary<String, String>)
-    {
-        self.postsArray.append(postDict)
-    }
-    
-    func endParsing(parser: RSSParser)
-    {
-        self.sortByData(operation: ">")
-        DispatchQueue.main.async
-        {
-            WaitIndicator.shared.hide()
-            self.newsTableView.reloadData()
-        }
-    }
-    
-    func parseErrorOccurred(parser: RSSParser, parseError: ParserError)
-    {
-        DispatchQueue.main.async
-        {
-            WaitIndicator.shared.hide()
-            self.present(alerter(title: "Error", message: parseError.rawValue), animated: true)
-        }
-    }
-    
-    
-    
-}
-
-extension NewsViewController: UITableViewDelegate, UITableViewDataSource
-{
-    func numberOfSections(in tableView: UITableView) -> Int
-    {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        self.postsArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as? NewsTableCell else {return UITableViewCell()}
-        
-        let post = self.postsArray[indexPath.row]
-        cell.setNewsCellParameters(data: post["pubDate"], title: post["title"], text: post["description"], link: post["link"])
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath)
-    {
-        guard let cell = tableView.cellForRow(at: indexPath) as? NewsTableCell
-        else {return}
-        performSegue(withIdentifier: self.segueIdentifier, sender: cell)
-    }
-    
 }

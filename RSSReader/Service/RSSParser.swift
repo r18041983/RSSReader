@@ -54,7 +54,7 @@ class RSSParser: NSObject {
             self.parserXML?.delegate = self
             self.parserXML?.parse()
         }
-        DispatchQueue.global(qos: .background).async
+        DispatchQueue.global(qos: .userInitiated).async
         {
             task.resume()
         }

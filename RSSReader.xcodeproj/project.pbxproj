@@ -19,6 +19,8 @@
 		8F1E0E6A2610FF9700F5B6F7 /* NewsTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8F1E0E682610FF9700F5B6F7 /* NewsTableCell.xib */; };
 		8F1E0E7026110D7B00F5B6F7 /* ShowPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1E0E6F26110D7B00F5B6F7 /* ShowPostController.swift */; };
 		8F1E0E782611207A00F5B6F7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1E0E772611207A00F5B6F7 /* Utilities.swift */; };
+		8F3D4EE42611F235005236A3 /* NewsViewController+TableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3D4EE32611F235005236A3 /* NewsViewController+TableDelegate.swift */; };
+		8F3D4EE72611F296005236A3 /* NewsViewController+ParseRSSDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3D4EE62611F296005236A3 /* NewsViewController+ParseRSSDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		8F1E0E682610FF9700F5B6F7 /* NewsTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsTableCell.xib; sourceTree = "<group>"; };
 		8F1E0E6F26110D7B00F5B6F7 /* ShowPostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPostController.swift; sourceTree = "<group>"; };
 		8F1E0E772611207A00F5B6F7 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		8F3D4EE32611F235005236A3 /* NewsViewController+TableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewsViewController+TableDelegate.swift"; sourceTree = "<group>"; };
+		8F3D4EE62611F296005236A3 /* NewsViewController+ParseRSSDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewsViewController+ParseRSSDelegate.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,8 @@
 			children = (
 				8F1E0E6E26110D4800F5B6F7 /* cells */,
 				8F1E0DD3260B02F800F5B6F7 /* NewsViewController.swift */,
+				8F3D4EE32611F235005236A3 /* NewsViewController+TableDelegate.swift */,
+				8F3D4EE62611F296005236A3 /* NewsViewController+ParseRSSDelegate.swift */,
 				8F1E0E6F26110D7B00F5B6F7 /* ShowPostController.swift */,
 			);
 			path = Controllers;
@@ -184,8 +190,10 @@
 				8F1E0E642610EAAC00F5B6F7 /* WaitIndicator.swift in Sources */,
 				8F1E0DD0260B02F800F5B6F7 /* AppDelegate.swift in Sources */,
 				8F1E0DD2260B02F800F5B6F7 /* SceneDelegate.swift in Sources */,
+				8F3D4EE42611F235005236A3 /* NewsViewController+TableDelegate.swift in Sources */,
 				8F1E0E5C2610BEC600F5B6F7 /* RSSParser.swift in Sources */,
 				8F1E0E692610FF9700F5B6F7 /* NewsTableCell.swift in Sources */,
+				8F3D4EE72611F296005236A3 /* NewsViewController+ParseRSSDelegate.swift in Sources */,
 				8F1E0E782611207A00F5B6F7 /* Utilities.swift in Sources */,
 				8F1E0E7026110D7B00F5B6F7 /* ShowPostController.swift in Sources */,
 			);
