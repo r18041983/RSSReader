@@ -28,16 +28,6 @@ class NewsViewController: UIViewController {
     }
 
     
-    func MD5(string: String) -> String
-    {
-        let digest = Insecure.MD5.hash(data: string.data(using: .utf8) ?? Data())
-        return digest.map
-        {
-            String(format: "%02hhx", $0)
-        }.joined()
-    }
-    
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         if segueIdentifier == self.segueIdentifier,
@@ -47,7 +37,44 @@ class NewsViewController: UIViewController {
             destination.setPostParameters(data: cell.savedData, title: cell.savedTitle, text: cell.savedText, link: cell.savedLink)
         }
     }
-
+    
+    
+    func sortByData(operation: Character) {
+        
+        for _ in 0..<self.postsArray.count
+        {
+            var flagNoChanges = true
+            for index in 0..<(self.postsArray.count - 1)
+            {
+                let date1 = stringRSSToDate(dateString: self.postsArray[index]["pubDate"])
+                let date2 = stringRSSToDate(dateString: self.postsArray[index + 1]["pubDate"])
+                
+                var boolSignature = true
+                if operation == ">"
+                {
+                    boolSignature = date1 > date2
+                }
+                else if operation == "<"
+                {
+                    boolSignature = date1 < date2
+                }
+                
+                if boolSignature
+                {
+                    let tempPost = self.postsArray[index]["pubDate"]
+                    self.postsArray[index]["pubDate"] = self.postsArray[index + 1]["pubDate"]
+                    self.postsArray[index + 1]["pubDate"] = tempPost
+                    flagNoChanges = false
+                }
+            }
+            if flagNoChanges
+            {
+                break
+            }
+        }
+    }
+    
+    
 
     @IBAction func pressParseButton(_ sender: UIButton)
     {
@@ -81,6 +108,7 @@ extension NewsViewController: RSSParserDelegate
     
     func endParsing(parser: RSSParser)
     {
+        self.sortByData(operation: ">")
         DispatchQueue.main.async
         {
             WaitIndicator.shared.hide()
